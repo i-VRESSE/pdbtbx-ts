@@ -8,10 +8,11 @@ use wasm_bindgen::prelude::*;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-#[wasm_bindgen]
+#[derive(Debug, Clone)]
+#[wasm_bindgen(getter_with_clone)]
 pub struct PDBInfo {
-    chains: String,
-    residue_sequence_numbers: String,
+    pub chains: String, // TODO use Vec<String>
+    pub residue_sequence_numbers: Vec<i32>,
 }
 
 #[derive(Debug, Clone)]
@@ -20,6 +21,12 @@ pub struct PDBError;
 
 #[wasm_bindgen]
 pub fn open_pdb(_content: &str) -> Result<PDBInfo, PDBError>{
-    let info = PDBInfo { chains: String::from("X"), residue_sequence_numbers: String::from("Y") };
+    let mut chains = Vec::new();
+    chains.push(String::from("A"));
+    let residue_sequence_numbers = vec![1,2,3,4];
+    let info = PDBInfo { 
+        chains: chains.join(","), 
+        residue_sequence_numbers: residue_sequence_numbers
+    };
     Ok(info)
 }

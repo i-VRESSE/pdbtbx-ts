@@ -67,3 +67,25 @@ wasm-pack publish
   for logging panic messages to the developer console.
 * [`wee_alloc`](https://github.com/rustwasm/wee_alloc), an allocator optimized
   for small code size.
+
+
+##  Test from JS
+
+First build npm package
+```shell
+wasm-pack build --target nodejs
+```
+
+In node repl
+
+```js
+fs = require('fs/promises')
+content = await fs.readFile('./e2aP_1F3G.pdb', encoding='utf8')
+pdbtbx = await import('./pkg/pdbtbx_ts.js')
+> info = pdbtbx.open_pdb(content)
+PDBInfo { ptr: 1114120 }
+> info.chains
+'A'
+> info.residue_sequence_numbers
+Int32Array(5) [ 1, 2, 3, 4 ]
+```
