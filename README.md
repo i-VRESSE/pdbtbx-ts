@@ -80,7 +80,7 @@ In node repl
 
 ```js
 fs = require('fs/promises')
-content = await fs.readFile('./e2aP_1F3G.pdb', encoding='utf8')
+content = await fs.readFile('./e2aP_1F3G.pdb', encoding='ascii')
 pdbtbx = await import('./pkg/pdbtbx_ts.js')
 > info = pdbtbx.open_pdb(content)
 PDBInfo { ptr: 1114120 }
