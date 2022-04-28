@@ -1,5 +1,7 @@
 mod utils;
 
+use pdbtbx::*;
+use std::io::BufReader;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -11,8 +13,8 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[derive(Debug, Clone)]
 #[wasm_bindgen(getter_with_clone)]
 pub struct PDBInfo {
-    pub chains: String, // TODO use Vec<String>
-    pub residue_sequence_numbers: Vec<i32>,
+    pub chains: String, // TODO replace comma seperated string with Vec<String>
+    pub residue_sequence_numbers: Vec<isize>,
 }
 
 #[derive(Debug, Clone)]
@@ -20,10 +22,10 @@ pub struct PDBInfo {
 pub struct PDBError;
 
 #[wasm_bindgen]
-pub fn open_pdb(_content: &str) -> Result<PDBInfo, PDBError>{
-    let mut chains = Vec::new();
-    chains.push(String::from("A"));
-    let residue_sequence_numbers = vec![1,2,3,4];
+pub fn open_pdb(content: &str) -> Result<PDBInfo, PDBError>{
+    let (pdb, _errors) =  open_pdb_raw(BufReader::new(content.as_bytes()), Context::None, StrictnessLevel::Loose).unwrap();
+    let chains: Vec<String> = pdb.chains().map(Chain::id).map(String::from).collect();
+    let residue_sequence_numbers: Vec<isize> = pdb.residues().map(Residue::serial_number).collect();
     let info = PDBInfo { 
         chains: chains.join(","), 
         residue_sequence_numbers: residue_sequence_numbers
