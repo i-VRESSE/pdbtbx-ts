@@ -13,22 +13,25 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[derive(Debug, Clone)]
 #[wasm_bindgen(getter_with_clone)]
 pub struct PDBInfo {
-    pub chains: String, // TODO replace comma seperated string with Vec<String>
+    pub chains: String, // TODO replace comma separated string with Vec<String>
     pub residue_sequence_numbers: Vec<isize>,
 }
 
-#[derive(Debug, Clone)]
 #[wasm_bindgen]
-pub struct PDBError;
-
-#[wasm_bindgen]
-pub fn open_pdb(content: &str) -> Result<PDBInfo, PDBError>{
-    let (pdb, _errors) =  open_pdb_raw(BufReader::new(content.as_bytes()), Context::None, StrictnessLevel::Loose).unwrap();
+pub fn open_pdb(content: &str) -> Result<PDBInfo, String> {
+    let (pdb, _errors) = open_pdb_raw(
+        BufReader::new(content.as_bytes()),
+        Context::None,
+        StrictnessLevel::Loose,
+    )
+    .map_err(|e| {
+        e.into_iter()
+            .fold("".to_string(), |acc, err| acc + &err.to_string() + "\n")
+    })?;
     let chains: Vec<String> = pdb.chains().map(Chain::id).map(String::from).collect();
-    let residue_sequence_numbers: Vec<isize> = pdb.residues().map(Residue::serial_number).collect();
-    let info = PDBInfo { 
-        chains: chains.join(","), 
-        residue_sequence_numbers: residue_sequence_numbers
-    };
-    Ok(info)
+    let residue_sequence_numbers = pdb.residues().map(Residue::serial_number).collect();
+    Ok(PDBInfo {
+        chains: chains.join(","),
+        residue_sequence_numbers,
+    })
 }
