@@ -73,9 +73,9 @@ wasm-pack publish
 First build npm package
 
 ```shell
-wasm-pack build --target web --out-dir pkg-web
+wasm-pack build --target web
 # Make generated package compatible with vite, vitest and NodeJS>=16
-perl -pi -e 's/\"module\"/"type": "module", "main"/' pkg-web/package.json
+perl -pi -e 's/\"module\"/"type": "module", "main"/' pkg/package.json
 ```
 
 `wasm-pack build` has several [targets](https://rustwasm.github.io/wasm-pack/book/commands/build.html#target).
@@ -85,7 +85,7 @@ The `nodejs` and `bundler` targets are incompatible with vite and vitest.
 Inside app dir
 
 ```shell
-yarn add ../pdbtbx-ts/pkg-web
+yarn add ../pdbtbx-ts/pkg
 ```
 
 In src/parse.ts
@@ -116,12 +116,13 @@ With NodeJS >=16 from this dir
 ```js
 const { readFile } = await import('fs/promises')
 content = await readFile('./e2aP_1F3G.pdb', encoding='ascii')
-const outdir = 'pkg-web'
+const outdir = 'pkg'
 const pdbtbx = await import(`./${outdir}/pdbtbx_ts.js`)
 const wasmBuffer = await readFile(`${outdir}/pdbtbx_ts_bg.wasm`)
 await pdbtbx.default(wasmBuffer)
 info = pdbtbx.open_pdb(content)
 info.chains
+info.residues_per_chain.get('A')
 ```
 
 With NodeJS >=16 from app with pdbtbx-ts installed
