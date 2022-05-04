@@ -116,8 +116,9 @@ With NodeJS >=16 from this dir
 ```js
 const { readFile } = await import('fs/promises')
 content = await readFile('./e2aP_1F3G.pdb', encoding='ascii')
-const pdbtbx = await import('./pkg-web/pdbtbx_ts.js')
-const wasmBuffer = await readFile('pkg-web/pdbtbx_ts_bg.wasm')
+const outdir = 'pkg-web'
+const pdbtbx = await import(`./${outdir}/pdbtbx_ts.js`)
+const wasmBuffer = await readFile(`${outdir}/pdbtbx_ts_bg.wasm`)
 await pdbtbx.default(wasmBuffer)
 info = pdbtbx.open_pdb(content)
 info.chains
