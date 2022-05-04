@@ -68,24 +68,69 @@ wasm-pack publish
 * [`wee_alloc`](https://github.com/rustwasm/wee_alloc), an allocator optimized
   for small code size.
 
-
-##  Test from JS
+## Using it locally
 
 First build npm package
+
 ```shell
-wasm-pack build --target nodejs
+wasm-pack build --target web --out-dir pkg-web
+# Make generated package compatible with vite, vitest and NodeJS>=16
+perl -pi -e 's/\"module\"/"type": "module", "main"/' pkg-web/package.json
 ```
 
-In node repl
+`wasm-pack build` has several [targets](https://rustwasm.github.io/wasm-pack/book/commands/build.html#target).
+The `web` target was picked because it compatible in more environments, but requires the suer to supply the wasm file.
+The `nodejs` and `bundler` targets are incompatible with vite and vitest.
+
+Inside app dir
+
+```shell
+yarn add ../pdbtbx-ts/pkg-web
+```
+
+In src/parse.ts
 
 ```js
-fs = require('fs/promises')
-content = await fs.readFile('./e2aP_1F3G.pdb', encoding='ascii')
-pdbtbx = await import('./pkg/pdbtbx_ts.js')
-> info = pdbtbx.open_pdb(content)
-PDBInfo { ptr: 1114120 }
-> info.chains
-'A'
-> info.residue_sequence_numbers
-Int32Array(5) [ 1, 2, 3, 4 ]
+import pdbtbx, { open_pdb } from 'pdbtbx-ts'
+
+function parse(content) {
+  if (process.env.NODE_ENV === 'test') {
+    // vitest is run in NodeJS so needs wasm file read from disk instead of fetch using url
+    const { readFile } = await import('fs/promises')
+    const wasmBuffer = await readFile('node_modules/pdbtbx-ts/pdbtbx_ts_bg.wasm')
+    await pdbtbx(wasmBuffer)
+  } else {
+    // To make vite aware of wasm file, it needs to passed to pdbtbx-ts default method.
+    // TODO make prettier URL
+    const mod = new URL('../../node_modules/pdbtbx-ts/pdbtbx_ts_bg.wasm', import.meta.url)
+    await pdbtbx(mod)
+  }
+  await pdbtbx(mod)
+  const info = open_pdb(content)
+  return info
+}
+```
+
+With NodeJS >=16 from this dir
+
+```js
+const { readFile } = await import('fs/promises')
+content = await readFile('./e2aP_1F3G.pdb', encoding='ascii')
+const pdbtbx = await import('./pkg-web/pdbtbx_ts.js')
+const wasmBuffer = await readFile('pkg-web/pdbtbx_ts_bg.wasm')
+await pdbtbx.default(wasmBuffer)
+info = pdbtbx.open_pdb(content)
+info.chains
+```
+
+With NodeJS >=16 from app with pdbtbx-ts installed
+
+```js
+const { readFile } = await import('fs/promises')
+content = await readFile('./e2aP_1F3G.pdb', encoding='ascii')
+const pdbtbx = await import('pdbtbx-ts')
+const wasmBuffer = await readFile('node_modules/pdbtbx-ts/pdbtbx_ts_bg.wasm')
+await pdbtbx.default(wasmBuffer)
+info = pdbtbx.open_pdb(content)
+info.chains
 ```
