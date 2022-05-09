@@ -9,6 +9,8 @@ Wrapper around [pdbtbx rust library](https://crates.io/crates/pdbtbx) for readin
 This NPM package only includes a subset of what the rust library can do.
 For now it is meanly focused on getting chain names and residue sequence numbers from PDB files.
 
+This package uses [wasm-pack](https://rustwasm.github.io/) to compile the pdbtbx rust library and its bindings to a NPM package using WebAssembly.
+
 ## 🚴 Usage
 
 Add to your app with
