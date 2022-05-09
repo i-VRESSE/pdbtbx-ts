@@ -1,6 +1,6 @@
-use wasm_bindgen_test::*;
 use pdbtbx_ts::*;
 use std::collections::HashMap;
+use wasm_bindgen_test::*;
 
 #[wasm_bindgen_test]
 pub fn test_single_atom() {
@@ -10,21 +10,19 @@ END
 
     let result = open_pdb(input).unwrap();
 
-    let result_deserialized:PDBInfo = serde_wasm_bindgen::from_value(result).unwrap();
+    let result_deserialized: PDBInfo = serde_wasm_bindgen::from_value(result).unwrap();
     let expected = PDBInfo {
         identifier: None,
         chains: vec!["A".to_string()],
         residue_sequence_numbers: vec![1],
         residues_per_chain: HashMap::from([(
             "A".to_string(),
-            vec![
-                ResidueInfo {
-                    number: 1,
-                    insertion_code: "-".to_string()
-                }
-            ]
+            vec![ResidueInfo {
+                number: 1,
+                insertion_code: "-".to_string(),
+            }],
         )]),
-        warnings: vec![]
+        warnings: vec![],
     };
     assert_eq!(result_deserialized, expected);
 }
