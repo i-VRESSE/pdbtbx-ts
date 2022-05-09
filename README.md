@@ -4,6 +4,7 @@ Wrapper around [pdbtbx rust library](https://crates.io/crates/pdbtbx) for readin
 
 [![npmjs.com](https://img.shields.io/npm/v/@i-vresse/pdbtbx-ts.svg?style=flat)](https://www.npmjs.com/package/@i-vresse/pdbtbx-ts)
 [![Build](https://github.com/i-VRESSE/pdbtbx-ts/actions/workflows/build.yml/badge.svg)](https://github.com/i-VRESSE/pdbtbx-ts/actions/workflows/build.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6532349.svg)](https://doi.org/10.5281/zenodo.6532349)
 [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B-yellow)](https://fair-software.eu)
 
 This NPM package only includes a subset of what the rust library can do.
