@@ -1,45 +1,31 @@
-<div align="center">
+# NPM Package for pdbtbx
 
-  <h1><code>wasm-pack-template</code></h1>
+Wrapper around [pdbtbx rust library](https://crates.io/crates/pdbtbx) for reading (crystallographic) Protein Data Bank (PDB) and mmCIF files.
 
-  <strong>A template for kick starting a Rust and WebAssembly project using <a href="https://github.com/rustwasm/wasm-pack">wasm-pack</a>.</strong>
-
-  <p>
-    <a href="https://travis-ci.org/rustwasm/wasm-pack-template"><img src="https://img.shields.io/travis/rustwasm/wasm-pack-template.svg?style=flat-square" alt="Build Status" /></a>
-  </p>
-
-  <h3>
-    <a href="https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html">Tutorial</a>
-    <span> | </span>
-    <a href="https://discordapp.com/channels/442252698964721669/443151097398296587">Chat</a>
-  </h3>
-
-  <sub>Built with 🦀🕸 by <a href="https://rustwasm.github.io/">The Rust and WebAssembly Working Group</a></sub>
-</div>
-
-## About
-
-[**📚 Read this template tutorial! 📚**][template-docs]
-
-This template is designed for compiling Rust libraries into WebAssembly and
-publishing the resulting package to NPM.
-
-Be sure to check out [other `wasm-pack` tutorials online][tutorials] for other
-templates and usages of `wasm-pack`.
-
-[tutorials]: https://rustwasm.github.io/docs/wasm-pack/tutorials/index.html
-[template-docs]: https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html
+[![Build](https://github.com/i-VRESSE/pdbtbx-ts/actions/workflows/build.yml/badge.svg)](https://github.com/i-VRESSE/pdbtbx-ts/actions/workflows/build.yml)
 
 ## 🚴 Usage
 
-### 🐑 Use `cargo generate` to Clone this Template
+Add to your app with
 
-[Learn more about `cargo generate` here.](https://github.com/ashleygwilliams/cargo-generate)
+```shell
+npm install pdbtbx-ts
+```
 
+In NodeJS use
+
+```js
+const { readFile } = await import('fs/promises')
+const pdbtbx = await import('pdbtbx-ts')
+const wasmBuffer = await readFile('node_modules/pdbtbx-ts/pdbtbx_ts_bg.wasm')
+await pdbtbx.default(wasmBuffer)
+# A PDB file downloaded from https://github.com/haddocking/haddock3/tree/main/examples/docking-protein-protein/data
+const content = await readFile('./e2aP_1F3G.pdb', encoding='ascii')
+info = pdbtbx.open_pdb(content)
+info.chains
 ```
-cargo generate --git https://github.com/rustwasm/wasm-pack-template.git --name my-project
-cd my-project
-```
+
+## Development
 
 ### 🛠️ Build with `wasm-pack build`
 
@@ -55,7 +41,7 @@ perl -pi -e 's/\"module\"/"type": "module", "main"/' pkg/package.json
 wasm-pack test --node
 ```
 
-Run JS tests that consume wasm
+Run JS tests that consume wasm. Requires NodeJS>=18.
 
 ```shell
 node --test tests
@@ -123,12 +109,12 @@ With NodeJS >=16 from this dir
 
 ```js
 const { readFile } = await import('fs/promises')
-content = await readFile('./e2aP_1F3G.pdb', encoding='ascii')
 const outdir = 'pkg'
 const pdbtbx = await import(`./${outdir}/pdbtbx_ts.js`)
 const wasmBuffer = await readFile(`${outdir}/pdbtbx_ts_bg.wasm`)
 await pdbtbx.default(wasmBuffer)
-info = pdbtbx.open_pdb(content)
+const content = await readFile('./e2aP_1F3G.pdb', encoding='ascii')
+const info = pdbtbx.open_pdb(content)
 info.chains
 info.residues_per_chain.get('A')
 ```
@@ -137,10 +123,10 @@ With NodeJS >=16 from app with pdbtbx-ts installed
 
 ```js
 const { readFile } = await import('fs/promises')
-content = await readFile('./e2aP_1F3G.pdb', encoding='ascii')
 const pdbtbx = await import('pdbtbx-ts')
 const wasmBuffer = await readFile('node_modules/pdbtbx-ts/pdbtbx_ts_bg.wasm')
 await pdbtbx.default(wasmBuffer)
-info = pdbtbx.open_pdb(content)
+const content = await readFile('./e2aP_1F3G.pdb', encoding='ascii')
+const info = pdbtbx.open_pdb(content)
 info.chains
 ```
