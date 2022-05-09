@@ -2,8 +2,9 @@
 
 Wrapper around [pdbtbx rust library](https://crates.io/crates/pdbtbx) for reading (crystallographic) Protein Data Bank (PDB) and mmCIF files in JavaScript.
 
-[![Build](https://img.shields.io/npm/v/@i-vresse/pdbtbx-ts.svg?style=flat)](https://www.npmjs.com/package/@i-vresse/pdbtbx-ts)
+[![npmjs.com](https://img.shields.io/npm/v/@i-vresse/pdbtbx-ts.svg?style=flat)](https://www.npmjs.com/package/@i-vresse/pdbtbx-ts)
 [![Build](https://github.com/i-VRESSE/pdbtbx-ts/actions/workflows/build.yml/badge.svg)](https://github.com/i-VRESSE/pdbtbx-ts/actions/workflows/build.yml)
+[![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B-yellow)](https://fair-software.eu)
 
 This NPM package only includes a subset of what the rust library can do.
 For now it is meanly focused on getting chain names and residue sequence numbers from PDB files.
@@ -44,7 +45,7 @@ info = pdbtbx.open_pdb(content)
 }
 ```
 
-In an application using Vite, yarn and TypeScript use
+In an application using Vite, vitest and TypeScript use
 
 ```js
 import pdbtbx, { open_pdb, PDBInfo } from 'pdbtbx-ts'
