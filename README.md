@@ -24,7 +24,7 @@ In NodeJS use
 
 ```js
 const { readFile } = await import('fs/promises')
-const pdbtbx = await import('pdbtbx-ts')
+const pdbtbx = await import('@i-vresse/pdbtbx-ts')
 const wasmBuffer = await readFile('node_modules/@i-vresse/pdbtbx-ts/pdbtbx_ts_bg.wasm')
 await pdbtbx.default(wasmBuffer)
 // A PDB file downloaded from https://github.com/haddocking/haddock3/tree/main/examples/docking-protein-protein/data
