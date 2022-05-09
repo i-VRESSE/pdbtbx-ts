@@ -11,21 +11,24 @@ use std::collections::HashMap;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-use serde::{Serialize};
+use serde::{Serialize, Deserialize};
 
-#[derive(Serialize)]
+#[derive(Debug, PartialEq)]
+#[derive(Serialize, Deserialize)]
 pub struct ResidueInfo {
-    number: isize,
-    insertion_code: String
+    pub number: isize,
+    pub insertion_code: String
 }
 
-#[derive(Serialize)]
+#[derive(Debug, PartialEq)]
+#[derive(Serialize, Deserialize)]
 pub struct PDBInfo {
     pub identifier: Option<String>,
     pub chains: Vec<String>,
     pub residue_sequence_numbers: Vec<isize>,
     // TODO serialize to js Object instead of Map (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
-    pub residues_per_chain: HashMap<String, Vec<ResidueInfo>>
+    pub residues_per_chain: HashMap<String, Vec<ResidueInfo>>,
+    pub warnings: Vec<String>
 }
 
 // TODO instead of writing open_pdb typescript signature manually try to use https://crates.io/crates/typescript-definitions
@@ -38,25 +41,17 @@ interface ResidueInfo {
 }
 
 interface IPDBInfo {
+    identifier?: string
     chains: string[]
     residue_sequence_numbers: number[]
     residues_per_chain: Map<string, ResidueInfo[]>
+    warnings: string[]
 }
 
 export function open_pdb (content: string): IPDBInfo
 "#;
 
-#[wasm_bindgen(skip_typescript)]
-pub fn open_pdb(content: &str) -> Result<JsValue, String> {
-    let (pdb, _errors) = open_pdb_raw(
-        BufReader::new(content.as_bytes()),
-        Context::None,
-        StrictnessLevel::Loose,
-    )
-    .map_err(|e| {
-        e.into_iter()
-            .fold("".to_string(), |acc, err| acc + &err.to_string() + "\n")
-    })?;
+fn pdb2pdbinfo(pdb: PDB, warnings: Vec<PDBError>) -> PDBInfo {
     let chains: Vec<String> = pdb.chains().map(Chain::id).map(String::from).collect();
     let residue_sequence_numbers = pdb.residues().map(Residue::serial_number).collect();
     let mut residues_per_chain = HashMap::new();
@@ -67,12 +62,38 @@ pub fn open_pdb(content: &str) -> Result<JsValue, String> {
         }).collect();
         residues_per_chain.insert(String::from(chain.id()), residues_of_chain);
     }
-    let info = PDBInfo {
+    let mut warnings_as_strings = Vec::new();
+    for warning in warnings {
+        warnings_as_strings.push(format!("{:?}", warning))
+    }
+    return PDBInfo {
         identifier: pdb.identifier,
         chains,
         residue_sequence_numbers,
-        residues_per_chain
+        residues_per_chain,
+        warnings: warnings_as_strings
     };
-    let js_value = serde_wasm_bindgen::to_value(&info).unwrap();
-    Ok(js_value)
+}
+
+#[wasm_bindgen(skip_typescript)]
+pub fn open_pdb(content: &str) -> Result<JsValue, JsValue> {
+    match open_pdb_raw(
+        BufReader::new(content.as_bytes()),
+        Context::None,
+        StrictnessLevel::Loose,
+    ) {
+        Ok((pdb, warnings)) => {
+            let info = pdb2pdbinfo(pdb, warnings);
+            let js_value = serde_wasm_bindgen::to_value(&info).unwrap();
+            Ok(js_value)
+        }
+        Err(errors) => {
+            let mut errors_as_strings = Vec::new();
+            for error in errors {
+                errors_as_strings.push(format!("{:?}", error))
+            }
+            let js_value = serde_wasm_bindgen::to_value(&errors_as_strings).unwrap();
+            Err(js_value)
+        }
+    }
 }
