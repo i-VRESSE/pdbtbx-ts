@@ -2,10 +2,11 @@
 name = "pdbtbx-ts"
 version = "0.1.2"
 authors = ["Stefan Verhoeven <s.verhoeven@esciencecenter.nl>"]
-edition = "2018"
+edition = "2021"
 description = "Typescript wrapper around pdbtbx"
 license = "Apache-2.0"
 repository = "https://github.com/i-VRESSE/pdbtbx-ts"
+keywords = ["pdb", "mmcif", "parse"]
 
 [lib]
 crate-type = ["cdylib", "rlib"]
