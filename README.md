@@ -43,19 +43,27 @@ cd my-project
 
 ### 🛠️ Build with `wasm-pack build`
 
-```
-wasm-pack build
+```shell
+wasm-pack build --target web
+# Make generated package compatible with vite, vitest and NodeJS>=16
+perl -pi -e 's/\"module\"/"type": "module", "main"/' pkg/package.json
 ```
 
-### 🔬 Test in Headless Browsers with `wasm-pack test`
+### 🔬 Test
 
+```shell
+wasm-pack test --node
 ```
-wasm-pack test --headless --firefox
+
+Run JS tests that consume wasm
+
+```shell
+node --test tests
 ```
 
 ### 🎁 Publish to NPM with `wasm-pack publish`
 
-```
+```shell
 wasm-pack publish
 ```
 
@@ -79,7 +87,7 @@ perl -pi -e 's/\"module\"/"type": "module", "main"/' pkg/package.json
 ```
 
 `wasm-pack build` has several [targets](https://rustwasm.github.io/wasm-pack/book/commands/build.html#target).
-The `web` target was picked because it compatible in more environments, but requires the suer to supply the wasm file.
+The `web` target was picked because it compatible in more environments, but requires the user to supply the wasm file.
 The `nodejs` and `bundler` targets are incompatible with vite and vitest.
 
 Inside app dir
