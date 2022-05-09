@@ -78,6 +78,7 @@ fn pdb2pdbinfo(pdb: PDB, warnings: Vec<PDBError>) -> PDBInfo {
 
 #[wasm_bindgen(skip_typescript)]
 pub fn open_pdb(content: &str) -> Result<JsValue, JsValue> {
+    utils::set_panic_hook();
     match open_pdb_raw(
         BufReader::new(content.as_bytes()),
         Context::None,
