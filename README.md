@@ -69,6 +69,14 @@ function parse(content: string): PDBInfo {
 
 ## Development
 
+Below are instructions how to develop this repository.
+
+Requirements:
+
+* Rust
+* [wasm-pack](https://rustwasm.github.io/wasm-pack/)
+* NodeJS version 18 or greater
+
 ### 🛠️ Build
 
 To build a NPM package in `pkg/` directory use
@@ -85,11 +93,15 @@ The `nodejs` and `bundler` targets are incompatible with vite and vitest.
 
 ### 🔬 Test
 
+Tests can be found in `tests/` directory.
+
+Run rust based testsuite with
+
 ```shell
 wasm-pack test --node
 ```
 
-Run JS tests that consume wasm. Requires NodeJS>=18.
+Run JS tests that consume wasm.
 
 ```shell
 node --test tests
