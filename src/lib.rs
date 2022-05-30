@@ -51,7 +51,7 @@ export function open_pdb (content: string): PDBInfo
 
 fn pdb2pdbinfo(pdb: PDB, warnings: Vec<PDBError>) -> PDBInfo {
     let chains: Vec<String> = pdb.chains().map(Chain::id).map(String::from).collect();
-    let residue_sequence_numbers = pdb.residues().map(Residue::serial_number).collect();
+    let residue_sequence_numbers = pdb.residues().map(Residue::serial_number).collect::<std::collections::HashSet<_>>().into_iter().collect();
     let mut residues_per_chain = HashMap::new();
     for chain in pdb.chains() {
         let residues_of_chain = chain

@@ -42,3 +42,38 @@ END
     ];
     assert_eq!(result_deserialized, expected);
 }
+
+#[wasm_bindgen_test]
+pub fn test_dup_resnum() {
+    let input = "ATOM      1  N   THR A  19      51.382  49.015  12.266  1.00  0.15      A
+ATOM   2587  N   ALA B  19      27.171  30.284  19.911  1.00  0.14      B
+END
+    ";
+
+    let result = open_pdb(input).unwrap();
+
+    let result_deserialized: PDBInfo = serde_wasm_bindgen::from_value(result).unwrap();
+    let expected = PDBInfo {
+        identifier: None,
+        chains: vec!["A".to_string(), "B".to_string()],
+        residue_sequence_numbers: vec![19],
+        residues_per_chain: HashMap::from([
+            (
+                "A".to_string(),
+                vec![ResidueInfo {
+                    number: 19,
+                    insertion_code: "-".to_string(),
+                }]
+            ),
+            (
+                "B".to_string(),
+                vec![ResidueInfo {
+                    number: 19,
+                    insertion_code: "-".to_string(),
+                }]
+            )
+        ]),
+        warnings: vec![],
+    };
+    assert_eq!(result_deserialized, expected);
+}
