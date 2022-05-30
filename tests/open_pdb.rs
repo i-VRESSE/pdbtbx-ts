@@ -63,15 +63,57 @@ END
                 vec![ResidueInfo {
                     number: 19,
                     insertion_code: "-".to_string(),
-                }]
+                }],
             ),
             (
                 "B".to_string(),
                 vec![ResidueInfo {
                     number: 19,
                     insertion_code: "-".to_string(),
-                }]
-            )
+                }],
+            ),
+        ]),
+        warnings: vec![],
+    };
+    assert_eq!(result_deserialized, expected);
+}
+
+#[wasm_bindgen_test]
+pub fn test_sorted_resnum() {
+    let input = "ATOM    588 1HG  GLU A  18     -13.363  -4.163  -2.372  1.00  0.00           H
+ATOM      5  CB BALA B   1      74.804  56.369  55.453  0.50 84.29           C
+ATOM      6  N  BASP B   2      75.872  56.703  57.905  0.50 85.59           N
+END
+    ";
+
+    let result = open_pdb(input).unwrap();
+
+    let result_deserialized: PDBInfo = serde_wasm_bindgen::from_value(result).unwrap();
+    let expected = PDBInfo {
+        identifier: None,
+        chains: vec!["A".to_string(), "B".to_string()],
+        residue_sequence_numbers: vec![1, 2, 18],
+        residues_per_chain: HashMap::from([
+            (
+                "A".to_string(),
+                vec![ResidueInfo {
+                    number: 18,
+                    insertion_code: "-".to_string(),
+                }],
+            ),
+            (
+                "B".to_string(),
+                vec![
+                    ResidueInfo {
+                        number: 1,
+                        insertion_code: "-".to_string(),
+                    },
+                    ResidueInfo {
+                        number: 2,
+                        insertion_code: "-".to_string(),
+                    },
+                ],
+            ),
         ]),
         warnings: vec![],
     };
