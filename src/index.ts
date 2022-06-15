@@ -7,6 +7,7 @@ export { open_pdb } from '../pkg/pdbtbx_ts'
  * @returns
  */
 export async function init () {
-    await pdbtbx_ts(wasm)
+    const w: any = wasm
+    await pdbtbx_ts(w.default)
     return
 }
