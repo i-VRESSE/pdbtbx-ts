@@ -19,14 +19,11 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 18
-    - name: Install
+    - name: Install wasm-pack
       run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+    - name: Install npm deps
+      run: npm ci
     - name: Build
-      run: wasm-pack build --target web --scope i-vresse
-    - name: Build post-process
-      run: |
-        perl -pi -e 's/\"module\"/"type": "module", "main"/' pkg/package.json
-    - name: Run rust tests
-      run: wasm-pack test --node
+      run: npm run build
     - name: Run node tests
-      run: node --test tests
+      run: npm run test

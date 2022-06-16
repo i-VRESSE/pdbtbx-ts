@@ -82,16 +82,10 @@ npm run build
 
 Tests can be found in `tests/` directory.
 
-Run rust based testsuite with
-
-```shell
-wasm-pack test --node
-```
-
 Run JS tests that consume wasm.
 
 ```shell
-node --test tests
+npm run test
 ```
 
 ### 🎁 Publish to npmjs.com

@@ -4,6 +4,7 @@
   "description": "Wrapper around [pdbtbx rust library](https://crates.io/crates/pdbtbx) for reading (crystallographic) Protein Data Bank (PDB) and mmCIF files in JavaScript.",
   "scripts": {
     "build": "wasm-pack build --target web && tsup",
+    "test": "node --test tests",
     "clean": "rm -rf dist pkg"
   },
   "repository": {
@@ -22,18 +23,11 @@
   },
   "files": [
     "dist/index.js",
-    "dist/index.cjs",
     "dist/indezx.d.ts"
   ],
   "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-"default": "./dist/index.js",
-"types": "./dist/index.d.ts"
-}
-    }
-  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
   "keywords": [
     "pdb",
@@ -46,10 +40,12 @@
       "src/index.ts"
     ],
     "dts": true,
-    "target": "node16",
+    "target": "es2020",
     "loader": {
-      ".wasm": "binary"
+      ".wasm": "base64"
     }
   },
-  "engines" : { "node" : ">=16" }
+  "engines": {
+    "node": ">=16"
+  }
 }
