@@ -1,6 +1,6 @@
 [package]
 name = "pdbtbx-ts"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["Stefan Verhoeven <s.verhoeven@esciencecenter.nl>"]
 edition = "2021"
 description = "Typescript wrapper around pdbtbx"
