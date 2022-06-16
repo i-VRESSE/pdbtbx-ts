@@ -1,6 +1,6 @@
 {
   "name": "@i-vresse/pdbtbx-ts",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Wrapper around [pdbtbx rust library](https://crates.io/crates/pdbtbx) for reading (crystallographic) Protein Data Bank (PDB) and mmCIF files in JavaScript.",
   "scripts": {
     "build": "wasm-pack build --target web && tsup",
