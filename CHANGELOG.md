@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2022-06-16
+
+### Changed
+
+- Inlined WebAssembly module as base64
+- Use init() to initialize instead of default export
+
 ## [0.1.2] - 2022-05-09
 
 Initial release

@@ -1,10 +1,9 @@
 import pdbtbx_ts from '../pkg/pdbtbx_ts'
 import * as wasm from '../pkg/pdbtbx_ts_bg.wasm'
-export { open_pdb } from '../pkg/pdbtbx_ts'
+export * from '../pkg/pdbtbx_ts'
 
 /**
- *
- * @returns
+ * Initialize WebAssembly module
  */
 export async function init () {
     const w: any = wasm
