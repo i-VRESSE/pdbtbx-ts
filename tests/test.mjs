@@ -2,11 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert';
 
 test('open_pdb', async () => {
-    const { readFile } = await import('fs/promises')
-    const outdir = 'pkg'
-    const pdbtbx = await import(`../${outdir}/pdbtbx_ts.js`)
-    const wasmBuffer = await readFile(`${outdir}/pdbtbx_ts_bg.wasm`)
-    await pdbtbx.default(wasmBuffer)
+    const outdir = 'dist'
+    const pdbtbx = await import(`../${outdir}/index.js`)
+    await pdbtbx.init()
 
     const content = `ATOM      1  N  BALA A   1      72.883  57.697  56.410  0.50 83.80           N
 END`;

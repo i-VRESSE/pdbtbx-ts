@@ -67,7 +67,7 @@ Requirements:
 
 * Rust
 * [wasm-pack](https://rustwasm.github.io/wasm-pack/)
-* NodeJS version 16 or greater
+* NodeJS version 18 or greater
 
 ### 🛠️ Build
 
