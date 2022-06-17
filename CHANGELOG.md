@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2022-06-16
+
+### Fixed
+
+- Several typos
+- Web browser compatible
+
 ## [0.1.5] - 2022-06-16
 
 ### Changed
@@ -24,5 +31,7 @@ Initial release
 
 ## [0.1.0] - 2022-05-09
 
-[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.1.7...HEAD
+[0.1.7]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.1.5..v0.1.7
+[0.1.5]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.1.2..v0.1.5
 [0.1.2]: https://github.com/olivierlacan/keep-a-changelog/releases/tag/v0.1.2
