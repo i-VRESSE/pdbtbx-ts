@@ -1,0 +1,52 @@
+{
+  "name": "@i-vresse/pdbtbx-ts",
+  "version": "0.1.7",
+  "description": "Wrapper around [pdbtbx rust library](https://crates.io/crates/pdbtbx) for reading (crystallographic) Protein Data Bank (PDB) and mmCIF files in JavaScript.",
+  "scripts": {
+    "build": "wasm-pack build --target web && tsup",
+    "test": "node --test tests",
+    "clean": "rm -rf dist pkg"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i-VRESSE/pdbtbx-ts.git"
+  },
+  "author": "Stefan Verhoeven",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/i-VRESSE/pdbtbx-ts/issues"
+  },
+  "homepage": "https://github.com/i-VRESSE/pdbtbx-ts#readme",
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "tsup": "^6.1.2",
+    "typescript": "^4.7.3"
+  },
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "keywords": [
+    "pdb",
+    "mmcif",
+    "parse"
+  ],
+  "tsup": {
+    "format": "esm",
+    "entry": [
+      "src/index.ts"
+    ],
+    "dts": true,
+    "target": "es2020",
+    "loader": {
+      ".wasm": "base64"
+    }
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
