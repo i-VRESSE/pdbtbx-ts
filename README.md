@@ -8,7 +8,7 @@ Wrapper around [pdbtbx rust library](https://crates.io/crates/pdbtbx) for readin
 [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B-yellow)](https://fair-software.eu)
 
 This NPM package only includes a subset of what the rust library can do.
-For now it is meanly focused on getting chain names and residue sequence numbers from PDB files.
+For now it is mainly focused on getting chain names and residue sequence numbers from PDB files.
 
 This package uses [wasm-pack](https://rustwasm.github.io/) and [tsup](https://tsup.egoist.sh) to compile the pdbtbx rust library and its bindings to a NPM package using WebAssembly.
 
